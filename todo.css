@@ -1,5 +1,10 @@
-todo {
-	margin: 50px;
+body {
+	background: url(ricepaper.png);
+}
+
+todo > div {
+	background: rgba(255,255,255,0.4);
+	padding: 20px;
 }
 
 todo input[type=text]:read-only {
