@@ -92,6 +92,8 @@
     editKeyPress(e) {
       if (e.which === 13 && e.item.edit) {
         this.editSave(e)
+      } else if (e.which == 27 && e.item.edit) {
+        this.deleteCancel(e)
       }
     }
 
