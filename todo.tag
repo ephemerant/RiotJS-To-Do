@@ -5,10 +5,10 @@
     <div class="row">
       <div class="large-12 columns">
         <div class="row collapse">
-          <div class="small-10 columns">
+          <div class="small-8 large-10 columns">
             <input type="text" name="addTodo" onkeyup="{addKeyPress}">
           </div>
-          <div class="small-2 columns button-group expanded">
+          <div class="small-4 large-2 columns button-group expanded">
             <a class="button" onclick="{addItem}">
               <i class="fi-plus"></i>
             </a>
@@ -24,10 +24,10 @@
     <div class="row" each={todo}>
       <div class="large-12 columns">
         <div class="row collapse">
-          <div class="small-10 columns">
+          <div class="small-8 large-10 columns">
             <input type="text" value="{text}" readonly="{!edit}" onchange="{textChange}" ondblclick="{editItem}" onkeyup="{editKeyPress}">
           </div>
-          <div class="small-2 columns button-group expanded">
+          <div class="small-4 large-2 columns button-group expanded">
             <a class="button {success: !edit}" onclick="{editSave}">
               <i class="{fi-pencil: !edit, fi-check: edit}"></i>
             </a>
@@ -64,6 +64,8 @@
     addKeyPress(e) {
       if (e.which === 13) {
         this.addItem(e)
+      } else if (e.which === 27) {
+        this.clearItem(e)
       }
     }
 
