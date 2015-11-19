@@ -8,15 +8,13 @@
           <div class="small-10 columns">
             <input type="text" name="addTodo" onkeyup="{addKeyPress}">
           </div>
-          <div class="small-1 columns">
-            <button class="postfix" onclick="{addItem}">
+          <div class="small-2 columns button-group expanded">
+            <a class="button" onclick="{addItem}">
               <i class="fi-plus"></i>
-            </button>
-          </div>
-          <div class="small-1 columns">
-            <button class="secondary postfix" onclick="{clearItem}">
+            </a>
+            <a class="button secondary" onclick="{clearItem}">
               <i class="fi-x"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -29,15 +27,13 @@
           <div class="small-10 columns">
             <input type="text" value="{text}" readonly="{!edit}" onchange="{textChange}" ondblclick="{editItem}" onkeyup="{editKeyPress}">
           </div>
-          <div class="small-1 columns">
-            <button class="{success: !edit} postfix" onclick="{editSave}">
+          <div class="small-2 columns button-group expanded">
+            <a class="button {success: !edit}" onclick="{editSave}">
               <i class="{fi-pencil: !edit, fi-check: edit}"></i>
-            </button>
-          </div>
-          <div class="small-1 columns">
-            <button class="{alert: !edit, secondary: edit} postfix" onclick="{deleteCancel}">
+            </a>
+            <a class="button {alert: !edit, secondary: edit}" onclick="{deleteCancel}">
               <i class="{fi-trash: !edit, fi-x: edit}"></i>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -93,7 +89,8 @@
       if (e.which === 13 && e.item.edit) {
         this.editSave(e)
       } else if (e.which == 27 && e.item.edit) {
-        this.deleteCancel(e)
+        e.target.blur()
+        this.deleteCancel(e)        
       }
     }
 
