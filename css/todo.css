@@ -1,8 +1,11 @@
+@import url(https://fonts.googleapis.com/css?family=Tillana:400,500);
+
 body {
 	background: url(../ricepaper.png);
 	background-color: rgb(70,30,0);
 	background-blend-mode: overlay;
 	height: auto;
+	font-family: 'Tillana', cursive;
 }
 
 todo > div {
