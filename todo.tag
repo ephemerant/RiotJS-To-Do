@@ -1,42 +1,44 @@
 <todo>
 
-  <!-- New todo -->
-  <div class="row">
-    <div class="large-12 columns">
-      <div class="row collapse">
-        <div class="small-10 columns">
-          <input type="text" name="addTodo">
-        </div>
-        <div class="small-1 columns">
-          <button class="postfix" onclick="{addItem}">
-            <i class="fi-plus"></i>
-          </button>
-        </div>
-        <div class="small-1 columns">
-          <button class="secondary postfix" onclick="{clearItem}">
-            <i class="fi-x"></i>
-          </button>
+  <div>
+    <!-- New todo -->
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="row collapse">
+          <div class="small-10 columns">
+            <input type="text" name="addTodo" onkeyup="{addKeyPress}">
+          </div>
+          <div class="small-1 columns">
+            <button class="postfix" onclick="{addItem}">
+              <i class="fi-plus"></i>
+            </button>
+          </div>
+          <div class="small-1 columns">
+            <button class="secondary postfix" onclick="{clearItem}">
+              <i class="fi-x"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Current todos -->
-  <div class="row" each={todo}>
-    <div class="large-12 columns">
-      <div class="row collapse">
-        <div class="small-10 columns">
-          <input type="text" value="{text}" readonly="{!edit}" onchange="{textChange}" ondblclick="{editItem}">
-        </div>
-        <div class="small-1 columns">
-          <button class="{success: !edit} postfix" onclick="{editSave}">
-            <i class="{fi-pencil: !edit, fi-check: edit}"></i>
-          </button>
-        </div>
-        <div class="small-1 columns">
-          <button class="{alert: !edit, secondary: edit} postfix" onclick="{deleteCancel}">
-            <i class="{fi-trash: !edit, fi-x: edit}"></i>
-          </button>
+    <!-- Current todos -->
+    <div class="row" each={todo}>
+      <div class="large-12 columns">
+        <div class="row collapse">
+          <div class="small-10 columns">
+            <input type="text" value="{text}" readonly="{!edit}" onchange="{textChange}" ondblclick="{editItem}" onkeyup="{editKeyPress}">
+          </div>
+          <div class="small-1 columns">
+            <button class="{success: !edit} postfix" onclick="{editSave}">
+              <i class="{fi-pencil: !edit, fi-check: edit}"></i>
+            </button>
+          </div>
+          <div class="small-1 columns">
+            <button class="{alert: !edit, secondary: edit} postfix" onclick="{deleteCancel}">
+              <i class="{fi-trash: !edit, fi-x: edit}"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -50,10 +52,24 @@
     }
 
     saveToLocalStorage() {
-      localStorage.todo = JSON.stringify(this.todo)
+      var clone = JSON.parse(JSON.stringify(this.todo))
+
+      // Discard non-essential properties
+      clone.forEach(function (task) {
+        delete task.edit
+        delete task.oldText
+      })
+
+      localStorage.todo = JSON.stringify(clone)
     }
 
     /* New todo */
+
+    addKeyPress(e) {
+      if (e.which === 13) {
+        this.addItem(e)
+      }
+    }
 
     addItem(e) {
       if (this.addTodo.value) {
@@ -73,11 +89,16 @@
       e.item.text = e.target.value
     }
 
+    editKeyPress(e) {
+      if (e.which === 13 && e.item.edit) {
+        this.editSave(e)
+      }
+    }
+
     editItem(e) {
       if (!e.item.edit) {
         // Enter edit mode
-        this.editSave(e)
-        e.target.select()
+        this.editSave(e)        
       }
     }
 
@@ -86,6 +107,7 @@
       if (e.item.edit) {
         // Enter edit mode
         e.item.oldText = e.item.text
+        e.path[3].querySelector('input[type=text]').select()
       } else { 
         // Exit edit mode and save changes
         delete e.item.oldText
