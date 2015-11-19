@@ -1,0 +1,9 @@
+todo {
+	margin: 50px;
+}
+
+todo input[type=text]:read-only {
+	background: none;
+	border: none;
+	box-shadow: none;
+}
