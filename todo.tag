@@ -108,7 +108,9 @@
       if (e.item.edit) {
         // Enter edit mode
         e.item.oldText = e.item.text
-        e.path[3].querySelector('input[type=text]').select()
+        var input = e.path[3].querySelector('input[type=text]')
+        input.focus()
+        input.select()
       } else { 
         // Exit edit mode and save changes
         delete e.item.oldText
