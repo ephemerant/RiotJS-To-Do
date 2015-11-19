@@ -89,6 +89,7 @@
       } else { 
         // Exit edit mode and save changes
         delete e.item.oldText
+        this.saveToLocalStorage()
       }
     }
 
@@ -97,6 +98,7 @@
         // Exit edit mode and discard changes
         e.item.text = e.item.oldText        
         e.item.edit = false
+        delete e.item.oldText
       } else {
         // Remove item
         this.todo = this.todo.filter(function(item) {
