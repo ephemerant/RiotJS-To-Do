@@ -8,7 +8,8 @@ body {
 	font-family: 'Tillana', cursive;
 }
 
-todo > div {
+todo {
+	display: block;
 	background: url(../img/lined_paper.png);
 	background-color: rgba(255,255,0,0.2);
 	background-blend-mode: overlay;
