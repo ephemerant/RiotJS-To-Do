@@ -7,7 +7,7 @@
     save() {
       /* Discard non-essential properties */
       localStorage.todo = JSON.stringify(this.todo.map(function (item) {
-        return { text: item.text }
+        return { text: item.text, done: item.done }
       }))
       this.update()
     }
@@ -18,7 +18,7 @@
   <form class="large-12 columns" onsubmit="{ addItem }">
     <div class="row collapse">
       <div class="small-8 large-10 columns">
-        <input type="text" onkeyup="{ addKeyPress }">
+        <input type="text" name="txtTodo" onkeyup="{ addKeyPress }">
       </div>
       <div class="small-4 large-2 columns button-group expanded">
         <button class="button">
@@ -33,16 +33,15 @@
   <script>
     addKeyPress(e) {
       if (e.which === 27) {
-        e.target.value = ''
+        this.txtTodo.value = ''
       }
     }
 
     addItem(e) {
-      var input = e.target[0]
-      if (input.value.length) {
-        this.parent.todo.push({ text: input.value, edit: false })                    
+      if (this.txtTodo.value.length) {
+        this.parent.todo.push({ text: this.txtTodo.value, edit: false })                    
         this.parent.save()
-        input.value = ''
+        this.txtTodo.value = ''
       }
     }
   </script>
@@ -52,7 +51,12 @@
   <form class="large-12 columns" onsubmit="{ editSave }">
     <div class="row collapse">
       <div class="small-8 large-10 columns">
-        <input type="text" value="{ text }" readonly="{ !edit }" onchange="{ e.item.text = e.target.value }" ondblclick="{ editItem }" onkeyup="{ editKeyPress }">
+        <div class="input-group">
+          <div class="input-group-label">
+            <input type="checkbox" checked="{ done }" onchange="{ toggleDone }">
+          </div>
+          <input type="text" name="txtTodo" class="input-group-field { done: done }" value="{ text }" readonly="{ !edit }" ondblclick="{ editItem }" onkeyup="{ editKeyPress }">
+        </div>
       </div>
       <div class="small-4 large-2 columns button-group expanded">
         <button class="button { success: !edit }">
@@ -65,9 +69,14 @@
     </div>
   </form>
   <script>
+    toggleDone(e) {
+      e.item.done = !e.item.done
+      this.parent.save()
+    }
+
     editKeyPress(e) {
       if (e.which == 27 && e.item.edit) {
-        e.target.blur()
+        this.txtTodo.blur()
         this.deleteCancel(e)        
       }
     }
@@ -83,12 +92,11 @@
       e.item.edit = !e.item.edit
       if (e.item.edit) {
         /* Enter edit mode */
-        e.item.oldText = e.item.text
-        var input = e.target[0] || e.target
-        input.focus()
-        input.select()
+        this.txtTodo.focus()
+        this.txtTodo.select()
       } else { 
         /* Exit edit mode and save changes */
+        e.item.text = this.txtTodo.value
         this.parent.save()
       }
     }
@@ -96,7 +104,7 @@
     deleteCancel(e) {
       if (e.item.edit) {
         /* Exit edit mode and save changes */
-        e.item.text = e.item.oldText        
+        this.txtTodo.value = e.item.text
         e.item.edit = false
       } else {
         /* Remove item */

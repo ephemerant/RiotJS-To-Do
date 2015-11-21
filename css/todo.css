@@ -34,3 +34,13 @@ todo input[type=text]:read-only {
 todo .button {
 	text-shadow: 0px 1px 4px rgba(0,0,0,0.6);
 }
+
+task .input-group-label {
+	background: none;
+	border: none;
+}
+
+.done {
+	text-decoration: line-through;
+	opacity: 0.5;
+}
